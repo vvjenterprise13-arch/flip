@@ -1,29 +1,33 @@
-FROM php:8.2-apache
+FROM ubuntu:22.04
 
-# Disable conflicting MPM modules, enable prefork only
-RUN a2dismod mpm_event mpm_worker 2>/dev/null || true \
-    && a2enmod mpm_prefork
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Enable required Apache modules
-RUN a2enmod rewrite
+# Install Apache + PHP
+RUN apt-get update && apt-get install -y \
+    apache2 \
+    php8.1 \
+    php8.1-mysqli \
+    php8.1-pdo \
+    php8.1-pdo-mysql \
+    libapache2-mod-php8.1 \
+    && apt-get clean
 
-# Install PHP extensions
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Enable rewrite
+RUN a2enmod rewrite php8.1
 
-# Allow .htaccess override
-RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+# Allow .htaccess
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
-# Copy all project files
+# Copy files
 COPY . /var/www/html/
+RUN rm -f /var/www/html/index.html
 
-# Set permissions
+# Permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
-
-# Create cache folder
-RUN mkdir -p /var/www/html/cache \
+    && chmod -R 755 /var/www/html \
+    && mkdir -p /var/www/html/cache \
     && chmod 777 /var/www/html/cache
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["apache2ctl", "-D", "FOREGROUND"]
