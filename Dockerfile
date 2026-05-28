@@ -19,8 +19,8 @@ RUN a2enmod rewrite php8.1
 RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # Copy files
+RUN rm -rf /var/www/html/*
 COPY . /var/www/html/
-RUN rm -f /var/www/html/index.html
 
 # Permissions
 RUN chown -R www-data:www-data /var/www/html \
