@@ -153,7 +153,7 @@ $active_offer = 'b2g1';
         $suggested_products_array = get_cached_query_result($conn, $suggested_sql, null, [], $cache_file_suggested, 900);
     ?>
         <div class="empty-cart-container">
-            <img src="/assets/catogary/comp.webp" alt="Empty Cart" /> 
+            <img src="<?php echo htmlspecialchars($pwebsite) ?>/assets/catogary/comp.webp" alt="Empty Cart" /> 
             <h4>Your cart is empty!</h4>
             <a href="index" class="shop-now-btn">Shop now</a>
         </div>
@@ -165,7 +165,7 @@ $active_offer = 'b2g1';
             <?php foreach($suggested_products_array as $product): ?>
                 <div class="suggested-product-card">
                     <a href="singlepageview?pid=<?php echo $product['id']; ?>" class="text-decoration-none">
-                        <img src="assets/uploads/<?php echo htmlspecialchars($product['image']); ?>">
+                        <img src="<?php echo htmlspecialchars($pwebsite) ?>/assets/uploads/<?php echo htmlspecialchars($product['image']); ?>">
                         <p class="product-name"><?php echo htmlspecialchars($product['name']); ?></p>
                         <div class="price-line"><span class="fw-bold text-dark">₹<?php echo $product['total']; ?></span><del class="text-muted">₹<?php echo $product['price']; ?></del></div>
                     </a>
@@ -228,7 +228,7 @@ $active_offer = 'b2g1';
                 <div class="cart-item-card-inner">
                     <span class="top-discount-badge">Top Discount of the Sale</span>
                     <div class="product-main">
-                        <img src="assets/uploads/<?php echo htmlspecialchars($product['image']); ?>" class="product-image">
+                        <img src="<?php echo htmlspecialchars($pwebsite) ?>/assets/uploads/<?php echo htmlspecialchars($product['image']); ?>" class="product-image">
                         <div class="product-details">
                             <p class="product-name mb-2"><?php echo htmlspecialchars($product['name']); ?></p>
                             <select class="quantity-select form-select-sm w-auto" onchange="location = 'update_cart_quantity.php?pid=<?php echo $pid; ?>&qty=' + this.value;">
@@ -264,7 +264,7 @@ $active_offer = 'b2g1';
                         <?php foreach($recommended_array as $product): ?>
                             <div class="suggested-product-card">
                                 <a href="singlepageview?pid=<?php echo $product['id']; ?>" class="text-decoration-none">
-                                    <img src="assets/uploads/<?php echo htmlspecialchars($product['image']); ?>">
+                                    <img src="<?php echo htmlspecialchars($pwebsite) ?>/assets/uploads/<?php echo htmlspecialchars($product['image']); ?>">
                                     <p class="product-name"><?php echo htmlspecialchars($product['name']); ?></p>
                                     <div class="price-line"><span class="fw-bold text-dark">₹<?php echo $product['total']; ?></span><del class="text-muted">₹<?php echo $product['price']; ?></del></div>
                                 </a>
