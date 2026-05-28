@@ -6,6 +6,8 @@ RUN apk add --no-cache nginx
 
 RUN mkdir -p /run/nginx
 
+COPY nginx.conf /etc/nginx/http.d/default.conf
+
 COPY . /var/www/html/
 
 RUN chown -R www-data:www-data /var/www/html \
@@ -13,26 +15,8 @@ RUN chown -R www-data:www-data /var/www/html \
     && mkdir -p /var/www/html/cache \
     && chmod 777 /var/www/html/cache
 
-RUN echo 'server {
-    listen 80;
-    root /var/www/html;
-    index index.php index.html;
-    
-    location / {
-        try_files $uri $uri/ $uri.php?$query_string;
-    }
-    
-    location ~ \.php$ {
-        fastcgi_pass 127.0.0.1:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    }
-}' > /etc/nginx/http.d/default.conf
-
-RUN echo '#!/bin/sh
-php-fpm -D
-nginx -g "daemon off;"' > /start.sh && chmod +x /start.sh
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 EXPOSE 80
 
