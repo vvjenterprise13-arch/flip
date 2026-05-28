@@ -1,28 +1,29 @@
 FROM php:8.2-apache
 
-# Apache modules enable
+# Disable conflicting MPM modules, enable prefork only
+RUN a2dismod mpm_event mpm_worker 2>/dev/null || true \
+    && a2enmod mpm_prefork
+
+# Enable required Apache modules
 RUN a2enmod rewrite
 
-# PHP extensions install
+# Install PHP extensions
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Apache config - allow .htaccess
-RUN echo '<Directory /var/www/html>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' > /etc/apache2/conf-available/allow-override.conf \
-    && a2enconf allow-override
+# Allow .htaccess override
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# PHP files copy
+# Copy all project files
 COPY . /var/www/html/
 
-# Permissions fix
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Cache folder create
+# Create cache folder
 RUN mkdir -p /var/www/html/cache \
-    && chown www-data:www-data /var/www/html/cache \
     && chmod 777 /var/www/html/cache
 
 EXPOSE 80
+
+CMD ["apache2-foreground"]
