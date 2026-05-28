@@ -242,7 +242,7 @@ if (isset($products_from_db[$last_product_id])) {
                 <?php foreach($recommended_array as $rec_product): ?>
                     <div class="suggested-product-card">
                         <a href="singlepageview?pid=<?php echo $rec_product['id']; ?>" class="text-decoration-none">
-                            <img src="assets/uploads/<?php echo htmlspecialchars($rec_product['image']); ?>" alt="<?php echo htmlspecialchars($rec_product['name']); ?>">
+                            <img src="<?php echo htmlspecialchars($pwebsite) ?>/assets/uploads/<?php echo htmlspecialchars($rec_product['image']); ?>" alt="<?php echo htmlspecialchars($rec_product['name']); ?>">
                             <p class="product-name"><?php echo htmlspecialchars($rec_product['name']); ?></p>
                             <div class="price-line">
                                 <span class="fw-bold text-dark">₹<?php echo number_format((float)$rec_product['total']); ?></span>
