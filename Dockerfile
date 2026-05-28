@@ -1,33 +1,18 @@
-FROM ubuntu:22.04
+FROM php:8.2-apache
 
-ENV DEBIAN_FRONTEND=noninteractive
+RUN docker-php-ext-install mysqli
 
-# Install Apache + PHP
-RUN apt-get update && apt-get install -y \
-    apache2 \
-    php8.1 \
-    php8.1-mysqli \
-    php8.1-pdo \
-    php8.1-pdo-mysql \
-    libapache2-mod-php8.1 \
-    && apt-get clean
+RUN a2enmod rewrite
 
-# Enable rewrite
-RUN a2enmod rewrite php8.1
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Allow .htaccess
-RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# Copy files
-RUN rm -rf /var/www/html/*
 COPY . /var/www/html/
 
-# Permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && mkdir -p /var/www/html/cache \
     && chmod 777 /var/www/html/cache
 
 EXPOSE 80
-
-CMD ["apache2ctl", "-D", "FOREGROUND"]
