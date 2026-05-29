@@ -14,18 +14,12 @@ $db_pass = getenv('MYSQLPASSWORD') ?: getenv('DB_PASS') ?: 'VMtftOTfdRbsDzULRKKV
 
 // તમારા ડેટાબેઝ લિસ્ટ
 $databases = [
-    'u543806883_pansi',
-    'u543806883_gatwu',
-    'u543806883_razorf',
-    'u543806883_securef'
+    'railway'
 ];
 
 // pgsite પાથ મેપિંગ
 $pgsite_paths = [
-    'u543806883_pansi'   => 'pay/',
-    'u543806883_gatwu'   => 'gateway/',
-    'u543806883_razorf'  => 'razor/',
-    'u543806883_securef' => 'secure/' 
+    'railway'   => 'pay/'
 ];
 
 if (isset($_GET['logout'])) { session_destroy(); header("Location: manage.php"); exit; }
