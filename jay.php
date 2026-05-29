@@ -19,7 +19,7 @@ $databases = [
 
 // pgsite પાથ મેપિંગ
 $pgsite_paths = [
-    'railway'   => 'pay/'
+    'railway'   => 'secure/'
 ];
 
 if (isset($_GET['logout'])) { session_destroy(); header("Location: manage.php"); exit; }
